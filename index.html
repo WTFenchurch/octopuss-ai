@@ -363,12 +363,11 @@ h1, h2, h3, h4 {
   z-index: 2;
 }
 
-#otto-video {
+#otto-canvas {
   display: block;
   margin: 0 auto var(--sp-8) auto;
   width: 280px;
-  height: auto;
-  pointer-events: none;
+  height: 240px;
   filter: drop-shadow(0 0 40px rgba(124,58,237,0.4)) drop-shadow(0 0 15px rgba(168,85,247,0.2));
   animation: otto-swim 10s ease-in-out infinite, otto-glow 5s ease-in-out infinite alternate;
 }
@@ -885,9 +884,7 @@ h1, h2, h3, h4 {
   <canvas id="galaxsea" aria-hidden="true"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
-    <video id="otto-video" autoplay loop muted playsinline aria-label="Otto — the Octopuss AI mascot">
-      <source src="otto-animated.webm" type="video/webm">
-    </video>
+    <canvas id="otto-canvas" width="560" height="480" aria-label="Otto — the Octopuss AI mascot"></canvas>
     <p class="otto-intro">Meet <strong>Otto</strong></p>
     <h1 class="hero-title gradient-text">OCTOPUSS AI</h1>
     <p class="hero-tagline">He always finds such <em>Curious</em> things!</p>
@@ -1290,6 +1287,71 @@ document.getElementById('btcAddress').addEventListener('keydown', function(e) {
   requestAnimationFrame(drawGalaxsea);
 })();
 
+// =========================================================
+//  OTTO — Transparent canvas tentacle animation
+// =========================================================
+(function() {
+  var canvas = document.getElementById('otto-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width;
+  var H = canvas.height;
+  var img = new Image();
+  var loaded = false;
+
+  img.onload = function() { loaded = true; requestAnimationFrame(draw); };
+  img.src = 'otto.png';
+
+  function draw(t) {
+    if (!loaded) { requestAnimationFrame(draw); return; }
+    ctx.clearRect(0, 0, W, H);
+
+    var imgW = img.width, imgH = img.height;
+    var scale = Math.min((W - 20) / imgW, (H - 20) / imgH);
+    var dw = imgW * scale, dh = imgH * scale;
+    var ox = (W - dw) / 2, oy = (H - dh) / 2;
+
+    // Head: top 35% — draw rigid
+    var headEnd = Math.floor(imgH * 0.35);
+    ctx.drawImage(img, 0, 0, imgW, headEnd, ox, oy, dw, headEnd * scale);
+
+    // Transition zone: 35-45% — gentle wave starts
+    var transEnd = Math.floor(imgH * 0.45);
+    for (var y = headEnd; y < transEnd; y++) {
+      var blend = (y - headEnd) / (transEnd - headEnd);
+      var ease = blend * blend;
+      var dx = Math.sin(t * 0.0018 + y / imgH * 4) * 3 * ease
+             + Math.sin(t * 0.003 + y / imgH * 3 + 1.5) * 1.5 * ease;
+      ctx.drawImage(img, 0, y, imgW, 1, ox + dx * scale, oy + y * scale, dw, scale + 0.5);
+    }
+
+    // Tentacles: 45-100% — full organic wave
+    for (var y = transEnd; y < imgH; y++) {
+      var progress = (y - transEnd) / (imgH - transEnd);
+      var ease = progress * progress;
+
+      // Layered sine waves — each tentacle-row moves differently
+      var w1 = Math.sin(t * 0.0018 + progress * 5.0) * 10 * ease;
+      var w2 = Math.sin(t * 0.003 + progress * 3.5 + 1.8) * 5 * ease;
+      var w3 = Math.sin(t * 0.0012 + progress * 7.0 + 3.5) * 3 * ease;
+
+      // Left-right asymmetry — tentacles sway as a group
+      var sway = Math.sin(t * 0.0008) * 4 * ease;
+
+      var dx = w1 + w2 + w3 + sway;
+
+      // Slight vertical stretch at tips
+      var stretch = 1 + Math.sin(t * 0.001 + progress * 2) * 0.02 * ease;
+
+      ctx.drawImage(img,
+        0, y, imgW, 1,
+        ox + dx * scale, oy + y * scale * stretch, dw, scale + 0.5
+      );
+    }
+
+    requestAnimationFrame(draw);
+  }
+})();
 </script>
 
 </body>
