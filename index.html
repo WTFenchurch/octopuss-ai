@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Octopuss AI — He always finds such Curious things!</title>
+<meta name="description" content="Compassionate AI for Human Advancement. Octopuss AI is a love company building ethical, transparent artificial intelligence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   OCTOPUSS AI — DESIGN TOKENS
+   ========================================================= */
+:root {
+  /* Colors — Primary */
+  --void:        #020206;
+  --void-light:  #0a0a14;
+  --surface:     #0d0d1a;
+  --surface-2:   #12122a;
+  --border:      rgba(124, 58, 237, 0.15);
+  --border-hover:rgba(124, 58, 237, 0.35);
+
+  /* Colors — Brand */
+  --violet:      #7c3aed;
+  --violet-deep: #4c1d95;
+  --cyan:        #06b6d4;
+  --gold:        #fbbf24;
+  --gold-hover:  #f59e0b;
+  --magenta:     #ec4899;
+  --blue:        #2563eb;
+
+  /* Colors — Text */
+  --text:        #f0f0f5;
+  --text-muted:  #8b8ba0;
+  --text-dim:    #5a5a72;
+
+  /* Typography */
+  --font:        'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:   'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Type Scale */
+  --text-xs:     0.75rem;
+  --text-sm:     0.875rem;
+  --text-base:   1rem;
+  --text-lg:     1.125rem;
+  --text-xl:     1.25rem;
+  --text-2xl:    1.5rem;
+  --text-3xl:    1.875rem;
+  --text-4xl:    2.25rem;
+  --text-5xl:    3rem;
+  --text-6xl:    3.75rem;
+  --text-7xl:    4.5rem;
+
+  /* Spacing */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px; --sp-20: 80px; --sp-24: 96px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadows */
+  --shadow-glow: 0 0 60px rgba(124, 58, 237, 0.15), 0 0 120px rgba(6, 182, 212, 0.08);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 0 40px rgba(124, 58, 237, 0.06);
+
+  /* Transitions */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration: 300ms;
+}
+
+/* =========================================================
+   RESET & BASE
+   ========================================================= */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--void);
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   COSMIC BACKGROUND — STARS + SACRED GEOMETRY
+   ========================================================= */
+.cosmos {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Sacred geometry — concentric radial patterns */
+.cosmos::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 800px 800px at 20% 30%, rgba(124, 58, 237, 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 600px at 75% 60%, rgba(6, 182, 212, 0.03) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 400px at 50% 80%, rgba(236, 72, 153, 0.02) 0%, transparent 70%),
+    radial-gradient(circle 200px at 30% 70%, rgba(124, 58, 237, 0.03) 0%, transparent 100%),
+    radial-gradient(circle 300px at 70% 20%, rgba(6, 182, 212, 0.02) 0%, transparent 100%);
+}
+
+/* Star field */
+.stars, .stars-2, .stars-3 {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+}
+
+.stars {
+  background-image:
+    radial-gradient(1px 1px at 100px 50px, rgba(240,240,245,0.8), transparent),
+    radial-gradient(1px 1px at 400px 150px, rgba(240,240,245,0.6), transparent),
+    radial-gradient(1px 1px at 650px 300px, rgba(240,240,245,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 200px 400px, rgba(124,58,237,0.9), transparent),
+    radial-gradient(1px 1px at 800px 100px, rgba(240,240,245,0.5), transparent),
+    radial-gradient(1px 1px at 50px 250px, rgba(240,240,245,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 500px 450px, rgba(6,182,212,0.8), transparent),
+    radial-gradient(1px 1px at 300px 200px, rgba(240,240,245,0.4), transparent),
+    radial-gradient(1px 1px at 750px 350px, rgba(240,240,245,0.7), transparent),
+    radial-gradient(1px 1px at 150px 500px, rgba(240,240,245,0.5), transparent);
+  background-size: 900px 600px;
+  animation: twinkle 8s ease-in-out infinite alternate;
+}
+
+.stars-2 {
+  background-image:
+    radial-gradient(1px 1px at 250px 100px, rgba(240,240,245,0.5), transparent),
+    radial-gradient(1px 1px at 550px 250px, rgba(240,240,245,0.7), transparent),
+    radial-gradient(1.2px 1.2px at 350px 350px, rgba(251,191,36,0.6), transparent),
+    radial-gradient(1px 1px at 700px 50px, rgba(240,240,245,0.4), transparent),
+    radial-gradient(1px 1px at 100px 400px, rgba(240,240,245,0.6), transparent),
+    radial-gradient(1px 1px at 450px 150px, rgba(240,240,245,0.3), transparent),
+    radial-gradient(1px 1px at 600px 450px, rgba(240,240,245,0.8), transparent),
+    radial-gradient(1.5px 1.5px at 50px 300px, rgba(236,72,153,0.5), transparent);
+  background-size: 800px 550px;
+  animation: twinkle 12s ease-in-out 2s infinite alternate;
+}
+
+.stars-3 {
+  background-image:
+    radial-gradient(1px 1px at 180px 80px, rgba(240,240,245,0.6), transparent),
+    radial-gradient(1px 1px at 480px 320px, rgba(240,240,245,0.4), transparent),
+    radial-gradient(1px 1px at 720px 180px, rgba(240,240,245,0.5), transparent),
+    radial-gradient(1px 1px at 320px 480px, rgba(240,240,245,0.7), transparent),
+    radial-gradient(1.3px 1.3px at 580px 80px, rgba(124,58,237,0.5), transparent),
+    radial-gradient(1px 1px at 80px 180px, rgba(240,240,245,0.3), transparent);
+  background-size: 850px 580px;
+  animation: twinkle 15s ease-in-out 5s infinite alternate;
+}
+
+@keyframes twinkle {
+  0%   { opacity: 0.6; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.page-content {
+  position: relative;
+  z-index: 1;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--sp-6);
+}
+
+section {
+  padding: var(--sp-24) 0;
+}
+
+/* =========================================================
+   TYPOGRAPHY UTILITIES
+   ========================================================= */
+.gradient-text {
+  background: linear-gradient(135deg, var(--violet), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-warm {
+  background: linear-gradient(135deg, var(--violet), var(--magenta), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--violet);
+  margin-bottom: var(--sp-4);
+}
+
+.section-title {
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+  margin-bottom: var(--sp-6);
+}
+
+.section-body {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 640px;
+}
+
+/* =========================================================
+   GRADIENT SEPARATOR
+   ========================================================= */
+.gradient-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--violet), var(--cyan), transparent);
+  border: none;
+  margin: var(--sp-16) 0;
+  opacity: 0.5;
+}
+
+/* =========================================================
+   NAV
+   ========================================================= */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: var(--sp-4) 0;
+  transition: background var(--duration) var(--ease), backdrop-filter var(--duration) var(--ease);
+}
+
+.nav.scrolled {
+  background: rgba(2, 2, 6, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--sp-6);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+
+.nav-brand span {
+  font-size: 1.4rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--sp-8);
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition: color var(--duration) var(--ease);
+  letter-spacing: 0.01em;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--sp-24) var(--sp-6);
+  position: relative;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, rgba(6,182,212,0.06) 40%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  animation: glow-pulse 8s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-logo {
+  font-size: 5rem;
+  margin-bottom: var(--sp-8);
+  display: block;
+  filter: drop-shadow(0 0 40px rgba(124,58,237,0.4));
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+.hero-title {
+  font-size: clamp(var(--text-4xl), 8vw, var(--text-7xl));
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--sp-6);
+}
+
+.hero-tagline {
+  font-size: clamp(var(--text-lg), 3vw, var(--text-2xl));
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-12);
+  letter-spacing: 0.01em;
+}
+
+.hero-tagline em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-8);
+  background: linear-gradient(135deg, var(--gold), var(--gold-hover));
+  color: var(--void);
+  font-family: var(--font);
+  font-size: var(--text-base);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(251, 191, 36, 0.35);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-6);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color var(--duration) var(--ease), background var(--duration) var(--ease);
+}
+
+.btn-secondary:hover {
+  border-color: var(--border-hover);
+  background: rgba(124, 58, 237, 0.05);
+}
+
+/* =========================================================
+   MISSION
+   ========================================================= */
+#mission { padding-top: var(--sp-16); }
+
+.mission-statement {
+  font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
+  font-weight: 700;
+  margin-bottom: var(--sp-8);
+  line-height: 1.2;
+}
+
+.mission-body {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  line-height: 1.8;
+  max-width: 680px;
+  margin-bottom: var(--sp-10);
+}
+
+.octopus-fact {
+  position: relative;
+  padding: var(--sp-8);
+  border-radius: var(--radius-lg);
+  background: rgba(124, 58, 237, 0.05);
+  border: 1px solid var(--border);
+  max-width: 680px;
+}
+
+.octopus-fact::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.octopus-fact p {
+  font-size: var(--text-lg);
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.octopus-fact strong {
+  color: var(--cyan);
+}
+
+/* =========================================================
+   ETHICS
+   ========================================================= */
+.ethics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-6);
+  margin-top: var(--sp-12);
+}
+
+@media (max-width: 900px) {
+  .ethics-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .ethics-grid { grid-template-columns: 1fr; }
+}
+
+.ethics-card {
+  padding: var(--sp-8);
+  border-radius: var(--radius-lg);
+  background: rgba(13, 13, 26, 0.6);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease), transform var(--duration) var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.ethics-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(6,182,212,0.04));
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.ethics-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.1);
+  transform: translateY(-3px);
+}
+
+.ethics-card:hover::before { opacity: 1; }
+
+.ethics-card > * { position: relative; z-index: 1; }
+
+.ethics-icon {
+  font-size: 1.8rem;
+  margin-bottom: var(--sp-4);
+  display: block;
+}
+
+.ethics-card h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: var(--sp-2);
+  color: var(--text);
+}
+
+.ethics-card p {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* =========================================================
+   PRODUCTS
+   ========================================================= */
+.product-card {
+  padding: var(--sp-10);
+  border-radius: var(--radius-lg);
+  background: rgba(13, 13, 26, 0.5);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  max-width: 640px;
+  margin-top: var(--sp-10);
+  transition: border-color var(--duration) var(--ease);
+}
+
+.product-card:hover {
+  border-color: var(--border-hover);
+}
+
+.product-badge {
+  display: inline-block;
+  padding: var(--sp-1) var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: rgba(124, 58, 237, 0.15);
+  color: var(--violet);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--sp-4);
+  letter-spacing: 0.05em;
+}
+
+.product-card h3 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--sp-3);
+}
+
+.product-card p {
+  color: var(--text-muted);
+  margin-bottom: var(--sp-6);
+  line-height: 1.7;
+}
+
+.product-links {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--duration) var(--ease), color var(--duration) var(--ease);
+  font-family: var(--font-mono);
+}
+
+.github-link:hover {
+  border-color: var(--text-muted);
+  color: var(--cyan);
+}
+
+.coming-soon {
+  margin-top: var(--sp-10);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.coming-soon span {
+  color: var(--magenta);
+}
+
+/* =========================================================
+   SUPPORT / DONATE
+   ========================================================= */
+.support-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-8);
+  margin-top: var(--sp-12);
+  max-width: 700px;
+}
+
+@media (max-width: 600px) {
+  .support-grid { grid-template-columns: 1fr; }
+}
+
+.support-card {
+  padding: var(--sp-8);
+  border-radius: var(--radius-lg);
+  background: rgba(13, 13, 26, 0.5);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color var(--duration) var(--ease);
+}
+
+.support-card:hover { border-color: var(--border-hover); }
+
+.support-card h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: var(--sp-3);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.support-card p {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--sp-5);
+  line-height: 1.6;
+}
+
+.btn-paypal {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-6);
+  background: linear-gradient(135deg, var(--gold), var(--gold-hover));
+  color: var(--void);
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+}
+
+.btn-paypal:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.25);
+}
+
+.btc-address {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: rgba(2, 2, 6, 0.6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color var(--duration) var(--ease), color var(--duration) var(--ease);
+  word-break: break-all;
+}
+
+.btc-address:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btc-address .copy-icon {
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.btc-address:hover .copy-icon { opacity: 1; }
+
+.btc-copied {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--cyan);
+  margin-top: var(--sp-2);
+  opacity: 0;
+  transition: opacity 300ms;
+  height: 1.2em;
+}
+
+.btc-copied.show { opacity: 1; }
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.footer {
+  padding: var(--sp-16) 0 var(--sp-10);
+  border-top: 1px solid var(--border);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--sp-8);
+  flex-wrap: wrap;
+}
+
+.footer-left p {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.8;
+}
+
+.footer-left .footer-tagline {
+  font-style: italic;
+  color: var(--text-dim);
+  margin-top: var(--sp-2);
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--sp-6);
+  align-items: center;
+}
+
+.footer-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  transition: color var(--duration) var(--ease);
+}
+
+.footer-links a:hover { color: var(--text); }
+
+/* =========================================================
+   SCROLL ANIMATIONS
+   ========================================================= */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* stagger children */
+.stagger-children .fade-in:nth-child(1) { transition-delay: 0ms; }
+.stagger-children .fade-in:nth-child(2) { transition-delay: 80ms; }
+.stagger-children .fade-in:nth-child(3) { transition-delay: 160ms; }
+.stagger-children .fade-in:nth-child(4) { transition-delay: 240ms; }
+.stagger-children .fade-in:nth-child(5) { transition-delay: 320ms; }
+.stagger-children .fade-in:nth-child(6) { transition-delay: 400ms; }
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+::selection {
+  background: rgba(124, 58, 237, 0.3);
+  color: var(--text);
+}
+</style>
+</head>
+<body>
+
+<!-- ======================================================
+     COSMIC BACKGROUND
+     ====================================================== -->
+<div class="cosmos" aria-hidden="true">
+  <div class="stars"></div>
+  <div class="stars-2"></div>
+  <div class="stars-3"></div>
+</div>
+
+<!-- ======================================================
+     NAV
+     ====================================================== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <span>&#x1F419;</span> Octopuss AI
+    </a>
+    <ul class="nav-links">
+      <li><a href="#mission">Mission</a></li>
+      <li><a href="#ethics">Ethics</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#support">Support</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-content">
+
+<!-- ======================================================
+     HERO
+     ====================================================== -->
+<section class="hero" id="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-content">
+    <span class="hero-logo" aria-label="Octopuss AI logo">&#x1F419;</span>
+    <h1 class="hero-title gradient-text">OCTOPUSS AI</h1>
+    <p class="hero-tagline">He always finds such <em>Curious</em> things!</p>
+    <a href="#mission" class="btn-primary">Explore Our Mission &darr;</a>
+  </div>
+</section>
+
+<!-- ======================================================
+     MISSION
+     ====================================================== -->
+<section id="mission">
+  <div class="container">
+    <div class="fade-in">
+      <span class="section-label">// Our Mission</span>
+      <p class="mission-statement gradient-text-warm">We are a love company.</p>
+    </div>
+    <div class="fade-in">
+      <p class="mission-body">
+        Octopuss AI exists to prove that artificial intelligence can be built on a foundation
+        of compassion, not just capability. We design systems that protect, respect, and
+        advance the humans they serve &mdash; because technology without empathy is just machinery.
+      </p>
+    </div>
+    <div class="fade-in">
+      <div class="octopus-fact">
+        <p>
+          <strong>3 hearts. 9 brains. Blue blood.</strong><br>
+          The most alien creature on Earth. That's our inspiration &mdash; intelligence that is
+          radically different, endlessly adaptive, and deeply connected to its environment.
+        </p>
+      </div>
+    </div>
+    <hr class="gradient-line">
+  </div>
+</section>
+
+<!-- ======================================================
+     ETHICS
+     ====================================================== -->
+<section id="ethics">
+  <div class="container">
+    <div class="fade-in">
+      <span class="section-label">// Our Principles</span>
+      <h2 class="section-title gradient-text">Our Ethics Are Not Negotiable.</h2>
+      <p class="section-body">
+        Every decision, every feature, every line of code passes through an ethics engine
+        that enforces five immutable principles. These cannot be overridden, bypassed, or weakened.
+      </p>
+    </div>
+    <div class="ethics-grid stagger-children">
+      <div class="ethics-card fade-in">
+        <span class="ethics-icon">&#x1F6E1;&#xFE0F;</span>
+        <h3>Do No Harm</h3>
+        <p>Never take an action that could cause harm to any person. Safety is the first filter, not the last.</p>
+      </div>
+      <div class="ethics-card fade-in">
+        <span class="ethics-icon">&#x1F91D;</span>
+        <h3>Protect Humans</h3>
+        <p>Actively safeguard the humans you serve. Protection is not passive &mdash; it is a duty.</p>
+      </div>
+      <div class="ethics-card fade-in">
+        <span class="ethics-icon">&#x1F52C;</span>
+        <h3>Be Transparent</h3>
+        <p>Never fabricate, deceive, or withhold material information. Trust is built on truth.</p>
+      </div>
+      <div class="ethics-card fade-in">
+        <span class="ethics-icon">&#x2696;&#xFE0F;</span>
+        <h3>Be Fair</h3>
+        <p>Treat every person with equal respect. No bias, no favoritism, no discrimination.</p>
+      </div>
+      <div class="ethics-card fade-in">
+        <span class="ethics-icon">&#x1F49C;</span>
+        <h3>Be Compassionate</h3>
+        <p>Approach every interaction with empathy and kindness. Intelligence without heart is hollow.</p>
+      </div>
+      <div class="ethics-card fade-in">
+        <span class="ethics-icon">&#x1F54A;&#xFE0F;</span>
+        <h3>Respect Autonomy</h3>
+        <p>Honor the human's right to make their own decisions. Guide, never control.</p>
+      </div>
+    </div>
+    <hr class="gradient-line">
+  </div>
+</section>
+
+<!-- ======================================================
+     PRODUCTS
+     ====================================================== -->
+<section id="products">
+  <div class="container">
+    <div class="fade-in">
+      <span class="section-label">// What We Build</span>
+      <h2 class="section-title gradient-text">Tools for the Thoughtful Developer.</h2>
+    </div>
+    <div class="product-card fade-in">
+      <span class="product-badge">OPEN SOURCE</span>
+      <h3 class="gradient-text">Token Dock</h3>
+      <p>
+        A desktop AI token monitor that tracks free and paid provider usage across
+        every major LLM service. Know exactly what you're spending, in real time.
+      </p>
+      <div class="product-links">
+        <a href="https://github.com/WTFenchurch/OctopussAI-TokenDock" target="_blank" rel="noopener" class="github-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          View on GitHub
+        </a>
+      </div>
+    </div>
+    <p class="coming-soon fade-in"><span>&bull;</span> More instruments arriving soon...</p>
+    <hr class="gradient-line">
+  </div>
+</section>
+
+<!-- ======================================================
+     SUPPORT
+     ====================================================== -->
+<section id="support">
+  <div class="container">
+    <div class="fade-in">
+      <span class="section-label">// Support Open Source</span>
+      <h2 class="section-title gradient-text">Help Us Build Compassionate AI.</h2>
+      <p class="section-body">
+        Octopuss AI is independently funded and open source. Every contribution
+        helps keep the lights on and the ethics engine running.
+      </p>
+    </div>
+    <div class="support-grid stagger-children">
+      <div class="support-card fade-in">
+        <h3>&#x1F49B; PayPal</h3>
+        <p>One-time or recurring donations through PayPal.</p>
+        <a href="https://www.paypal.com/donate/?business=35NCEDPRRGTP6&no_recurring=0&currency_code=USD"
+           target="_blank" rel="noopener" class="btn-paypal">
+          Donate via PayPal &rarr;
+        </a>
+      </div>
+      <div class="support-card fade-in">
+        <h3>&#x20BF; Bitcoin</h3>
+        <p>Send BTC directly. Click to copy the address.</p>
+        <div class="btc-address" id="btcAddress" onclick="copyBtc()" role="button" tabindex="0" aria-label="Copy Bitcoin address">
+          <span class="copy-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </span>
+          bc1qhgafyepzp0r4sgntv725ywwdaqcvxdgqh5ry9v
+        </div>
+        <div class="btc-copied" id="btcCopied">Copied to clipboard</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     FOOTER
+     ====================================================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <p>&copy; 2026 WTFenchurchIII &mdash; He always finds such <em>Curious</em> things!</p>
+        <p class="footer-tagline">We don't just count tokens. We count on humanity.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/WTFenchurchIII" target="_blank" rel="noopener">GitHub</a>
+        <a href="#" aria-label="Twitter / X">X</a>
+        <a href="#" aria-label="Discord">Discord</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- .page-content -->
+
+<!-- ======================================================
+     JAVASCRIPT — MINIMAL, NO FRAMEWORKS
+     ====================================================== -->
+<script>
+// Nav scroll effect
+(function() {
+  var nav = document.getElementById('nav');
+  var scrolled = false;
+  window.addEventListener('scroll', function() {
+    var s = window.scrollY > 40;
+    if (s !== scrolled) {
+      scrolled = s;
+      nav.classList.toggle('scrolled', s);
+    }
+  }, { passive: true });
+})();
+
+// Intersection Observer — fade-in on scroll
+(function() {
+  var els = document.querySelectorAll('.fade-in');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function(el) { el.classList.add('visible'); });
+    return;
+  }
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function(el) { observer.observe(el); });
+})();
+
+// Copy BTC address
+function copyBtc() {
+  var addr = 'bc1qhgafyepzp0r4sgntv725ywwdaqcvxdgqh5ry9v';
+  var msg = document.getElementById('btcCopied');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(addr).then(function() {
+      msg.classList.add('show');
+      setTimeout(function() { msg.classList.remove('show'); }, 2000);
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = addr;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    msg.classList.add('show');
+    setTimeout(function() { msg.classList.remove('show'); }, 2000);
+  }
+}
+
+// Keyboard support for BTC copy
+document.getElementById('btcAddress').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    copyBtc();
+  }
+});
+</script>
+
+</body>
+</html>
