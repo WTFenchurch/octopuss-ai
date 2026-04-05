@@ -1131,16 +1131,15 @@ document.getElementById('btcAddress').addEventListener('keydown', function(e) {
 
   function initStars() {
     stars = [];
-    var count = Math.floor((gc.width * gc.height) / 600);
+    var count = Math.floor((gc.width * gc.height) / 1800);
     for (var i = 0; i < count; i++) {
       stars.push({
         x: Math.random() * gc.width,
         y: Math.random() * gc.height,
-        r: Math.random() * 2 + 0.3,
-        twinkleSpeed: Math.random() * 0.03 + 0.008,
+        r: Math.random() * 1.3 + 0.2,
+        twinkleSpeed: Math.random() * 0.015 + 0.003,
         twinkleOffset: Math.random() * Math.PI * 2,
-        drift: (Math.random() - 0.5) * 0.2,
-        color: Math.random() > 0.85 ? [168,85,247] : Math.random() > 0.7 ? [100,200,255] : [255,255,255]
+        drift: (Math.random() - 0.5) * 0.08
       });
     }
   }
@@ -1148,63 +1147,55 @@ document.getElementById('btcAddress').addEventListener('keydown', function(e) {
   function initNebulae() {
     nebulae = [];
     var configs = [
-      { color: [124, 58, 237], alpha: 0.18 },  // purple — strong
-      { color: [168, 85, 247], alpha: 0.14 },  // violet
-      { color: [236, 72, 153], alpha: 0.10 },  // pink
-      { color: [6, 182, 212],  alpha: 0.08 },  // cyan
-      { color: [99, 42, 196],  alpha: 0.15 },  // deep purple
-      { color: [147, 51, 234], alpha: 0.12 },  // bright violet
-      { color: [59, 130, 246], alpha: 0.07 },  // blue
+      { color: [124, 58, 237], alpha: 0.07 },  // purple
+      { color: [168, 85, 247], alpha: 0.05 },  // violet
+      { color: [99, 42, 196],  alpha: 0.06 },  // deep purple
     ];
     for (var i = 0; i < configs.length; i++) {
       var c = configs[i];
       nebulae.push({
-        x: gc.width * (0.15 + Math.random() * 0.7),
-        y: gc.height * (0.1 + Math.random() * 0.8),
-        rx: Math.random() * 350 + 200,
-        ry: Math.random() * 250 + 150,
+        x: gc.width * (0.2 + Math.random() * 0.6),
+        y: gc.height * (0.2 + Math.random() * 0.6),
+        rx: Math.random() * 300 + 200,
+        ry: Math.random() * 200 + 120,
         color: c.color,
         alpha: c.alpha,
-        driftX: (Math.random() - 0.5) * 0.4,
-        driftY: (Math.random() - 0.5) * 0.2,
-        pulseSpeed: Math.random() * 0.004 + 0.001,
-        rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.0003
+        driftX: (Math.random() - 0.5) * 0.15,
+        driftY: (Math.random() - 0.5) * 0.08,
+        pulseSpeed: Math.random() * 0.002 + 0.0005
       });
     }
   }
 
-  // Floating cosmic particles — like bioluminescent plankton
   function initParticles() {
     particles = [];
-    var count = 40;
+    var count = 12;
     for (var i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * gc.width,
         y: Math.random() * gc.height,
-        r: Math.random() * 3 + 1,
-        speed: Math.random() * 0.3 + 0.1,
+        r: Math.random() * 1.5 + 0.5,
+        speed: Math.random() * 0.15 + 0.05,
         wobble: Math.random() * Math.PI * 2,
-        wobbleSpeed: Math.random() * 0.02 + 0.005,
-        alpha: Math.random() * 0.6 + 0.2,
+        wobbleSpeed: Math.random() * 0.01 + 0.003,
+        alpha: Math.random() * 0.3 + 0.1,
         color: Math.random() > 0.5 ? [168,85,247] : [6,182,212],
         life: Math.random() * 1000
       });
     }
   }
 
-  // Flowing light currents — like deep ocean bioluminescence
   function initCurrents() {
     currents = [];
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 2; i++) {
       currents.push({
-        yBase: gc.height * (0.15 + i * 0.13),
-        amplitude: 30 + Math.random() * 50,
-        frequency: 0.003 + Math.random() * 0.005,
-        speed: 0.0004 + Math.random() * 0.0006,
-        width: 1.5 + Math.random() * 2,
-        alpha: 0.06 + Math.random() * 0.08,
-        color: i % 3 === 0 ? [168,85,247] : i % 3 === 1 ? [6,182,212] : [236,72,153],
+        yBase: gc.height * (0.35 + i * 0.3),
+        amplitude: 25 + Math.random() * 30,
+        frequency: 0.003 + Math.random() * 0.003,
+        speed: 0.0003 + Math.random() * 0.0003,
+        width: 1,
+        alpha: 0.04 + Math.random() * 0.03,
+        color: i === 0 ? [168,85,247] : [6,182,212],
         phase: Math.random() * Math.PI * 2
       });
     }
@@ -1213,101 +1204,64 @@ document.getElementById('btcAddress').addEventListener('keydown', function(e) {
   function drawGalaxsea(t) {
     gctx.clearRect(0, 0, gc.width, gc.height);
 
-    // Nebula clouds — vivid, breathing, slowly rotating
+    // Nebula clouds — subtle, slow drift
     for (var i = 0; i < nebulae.length; i++) {
       var n = nebulae[i];
-      var pulse = 1 + Math.sin(t * n.pulseSpeed) * 0.3;
+      var pulse = 1 + Math.sin(t * n.pulseSpeed) * 0.15;
       n.x += n.driftX;
       n.y += n.driftY;
-      n.rotation += n.rotSpeed;
       if (n.x < -400) n.x = gc.width + 400;
       if (n.x > gc.width + 400) n.x = -400;
       if (n.y < -300) n.y = gc.height + 300;
       if (n.y > gc.height + 300) n.y = -300;
 
-      gctx.save();
-      gctx.translate(n.x, n.y);
-      gctx.rotate(n.rotation);
-      var grad = gctx.createRadialGradient(0, 0, 0, 0, 0, n.rx * pulse);
-      var a = n.alpha * (0.8 + 0.2 * Math.sin(t * n.pulseSpeed * 1.5));
-      grad.addColorStop(0, 'rgba(' + n.color[0] + ',' + n.color[1] + ',' + n.color[2] + ',' + a + ')');
-      grad.addColorStop(0.4, 'rgba(' + n.color[0] + ',' + n.color[1] + ',' + n.color[2] + ',' + (a * 0.4) + ')');
+      var grad = gctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.rx * pulse);
+      grad.addColorStop(0, 'rgba(' + n.color[0] + ',' + n.color[1] + ',' + n.color[2] + ',' + n.alpha + ')');
+      grad.addColorStop(0.5, 'rgba(' + n.color[0] + ',' + n.color[1] + ',' + n.color[2] + ',' + (n.alpha * 0.3) + ')');
       grad.addColorStop(1, 'transparent');
       gctx.fillStyle = grad;
-      gctx.scale(1, n.ry / n.rx);
-      gctx.fillRect(-n.rx * pulse, -n.rx * pulse, n.rx * pulse * 2, n.rx * pulse * 2);
-      gctx.restore();
+      gctx.fillRect(0, 0, gc.width, gc.height);
     }
 
-    // Stars — twinkling, drifting, some colored
+    // Stars — gentle twinkle
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
       var twinkle = 0.3 + 0.7 * Math.abs(Math.sin(t * s.twinkleSpeed + s.twinkleOffset));
       s.x += s.drift;
-      s.y += Math.sin(t * 0.001 + s.twinkleOffset) * 0.08;
       if (s.x < 0) s.x = gc.width;
       if (s.x > gc.width) s.x = 0;
 
       gctx.beginPath();
-      gctx.arc(s.x, s.y, s.r * (0.8 + twinkle * 0.4), 0, Math.PI * 2);
-      gctx.fillStyle = 'rgba(' + s.color[0] + ',' + s.color[1] + ',' + s.color[2] + ',' + twinkle + ')';
+      gctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      gctx.fillStyle = 'rgba(255,255,255,' + twinkle + ')';
       gctx.fill();
-
-      // Bright stars get a glow
-      if (s.r > 1.5 && twinkle > 0.7) {
-        gctx.beginPath();
-        gctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
-        gctx.fillStyle = 'rgba(' + s.color[0] + ',' + s.color[1] + ',' + s.color[2] + ',' + (twinkle * 0.15) + ')';
-        gctx.fill();
-      }
     }
 
-    // Flowing light currents — bioluminescent ocean streams
+    // Two soft currents
     for (var i = 0; i < currents.length; i++) {
       var c = currents[i];
       gctx.beginPath();
-      for (var x = 0; x < gc.width; x += 3) {
-        var y = c.yBase
-          + Math.sin(x * c.frequency + t * c.speed + c.phase) * c.amplitude
-          + Math.sin(x * c.frequency * 2.3 + t * c.speed * 1.7) * (c.amplitude * 0.3);
+      for (var x = 0; x < gc.width; x += 4) {
+        var y = c.yBase + Math.sin(x * c.frequency + t * c.speed + c.phase) * c.amplitude;
         if (x === 0) gctx.moveTo(x, y);
         else gctx.lineTo(x, y);
       }
-      var cAlpha = c.alpha * (0.6 + 0.4 * Math.sin(t * 0.001 + c.phase));
-      gctx.strokeStyle = 'rgba(' + c.color[0] + ',' + c.color[1] + ',' + c.color[2] + ',' + cAlpha + ')';
+      gctx.strokeStyle = 'rgba(' + c.color[0] + ',' + c.color[1] + ',' + c.color[2] + ',' + c.alpha + ')';
       gctx.lineWidth = c.width;
-      gctx.stroke();
-
-      // Glow line behind it
-      gctx.strokeStyle = 'rgba(' + c.color[0] + ',' + c.color[1] + ',' + c.color[2] + ',' + (cAlpha * 0.3) + ')';
-      gctx.lineWidth = c.width * 4;
       gctx.stroke();
     }
 
-    // Cosmic particles — rising bioluminescent plankton
+    // Sparse particles — just a few floating motes
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       p.y -= p.speed;
-      p.x += Math.sin(t * p.wobbleSpeed + p.wobble) * 0.5;
-      p.life += 1;
+      p.x += Math.sin(t * p.wobbleSpeed + p.wobble) * 0.3;
+      if (p.y < -10) { p.y = gc.height + 10; p.x = Math.random() * gc.width; }
 
-      if (p.y < -10) {
-        p.y = gc.height + 10;
-        p.x = Math.random() * gc.width;
-      }
-
-      var fadeIn = Math.min(p.life / 60, 1);
-      var a = p.alpha * fadeIn * (0.5 + 0.5 * Math.sin(t * 0.005 + p.wobble));
-
+      var a = p.alpha * (0.5 + 0.5 * Math.sin(t * 0.004 + p.wobble));
       gctx.beginPath();
       gctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       gctx.fillStyle = 'rgba(' + p.color[0] + ',' + p.color[1] + ',' + p.color[2] + ',' + a + ')';
-      gctx.fill();
-
-      // Particle glow
-      gctx.beginPath();
-      gctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
-      gctx.fillStyle = 'rgba(' + p.color[0] + ',' + p.color[1] + ',' + p.color[2] + ',' + (a * 0.2) + ')';
       gctx.fill();
     }
 
