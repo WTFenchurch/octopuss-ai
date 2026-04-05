@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Octopuss AI — He always finds such Curious things!</title>
 <meta name="description" content="Compassionate AI for Human Advancement. Octopuss AI is a love company building ethical, transparent artificial intelligence.">
+<link rel="icon" type="image/png" href="logo.png">
+<meta property="og:image" content="logo.png">
+<meta property="og:title" content="Octopuss AI — He always finds such Curious things!">
+<meta property="og:description" content="Compassionate AI for Human Advancement.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -345,11 +349,14 @@ h1, h2, h3, h4 {
 }
 
 .hero-logo {
-  font-size: 5rem;
+  width: 180px;
+  height: 180px;
   margin-bottom: var(--sp-8);
   display: block;
   filter: drop-shadow(0 0 40px rgba(124,58,237,0.4));
   animation: float 6s ease-in-out infinite;
+  border-radius: 50%;
+  object-fit: contain;
 }
 
 @keyframes float {
@@ -840,7 +847,7 @@ h1, h2, h3, h4 {
 <section class="hero" id="hero">
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
-    <span class="hero-logo" aria-label="Octopuss AI logo">&#x1F419;</span>
+    <img class="hero-logo" src="logo.png" alt="Octopuss AI logo" width="180" height="180">
     <h1 class="hero-title gradient-text">OCTOPUSS AI</h1>
     <p class="hero-tagline">He always finds such <em>Curious</em> things!</p>
     <a href="#mission" class="btn-primary">Explore Our Mission &darr;</a>
