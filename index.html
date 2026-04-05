@@ -363,28 +363,27 @@ h1, h2, h3, h4 {
   z-index: 2;
 }
 
-#otto-canvas {
+#otto-video {
   display: block;
   margin: 0 auto var(--sp-8) auto;
   width: 280px;
-  height: 280px;
-  cursor: pointer;
-  filter: drop-shadow(0 0 50px rgba(124,58,237,0.5)) drop-shadow(0 0 20px rgba(168,85,247,0.3));
-  animation: otto-container-swim 10s ease-in-out infinite, otto-glow 5s ease-in-out infinite alternate;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 0 40px rgba(124,58,237,0.4)) drop-shadow(0 0 15px rgba(168,85,247,0.2));
+  animation: otto-swim 10s ease-in-out infinite, otto-glow 5s ease-in-out infinite alternate;
 }
 
-@keyframes otto-container-swim {
+@keyframes otto-swim {
   0%, 100% { transform: translate(0, 0); }
-  25%      { transform: translate(5px, -10px); }
-  50%      { transform: translate(-3px, -16px); }
-  75%      { transform: translate(-6px, -6px); }
+  25%      { transform: translate(4px, -8px); }
+  50%      { transform: translate(-2px, -12px); }
+  75%      { transform: translate(-5px, -4px); }
 }
 
 @keyframes otto-glow {
   0%   { filter: drop-shadow(0 0 35px rgba(124,58,237,0.4)) drop-shadow(0 0 12px rgba(168,85,247,0.15)); }
-  33%  { filter: drop-shadow(0 0 45px rgba(168,85,247,0.5)) drop-shadow(0 0 18px rgba(236,72,153,0.2)); }
-  66%  { filter: drop-shadow(0 0 50px rgba(236,72,153,0.35)) drop-shadow(0 0 22px rgba(124,58,237,0.25)); }
-  100% { filter: drop-shadow(0 0 55px rgba(168,85,247,0.55)) drop-shadow(0 0 25px rgba(236,72,153,0.3)); }
+  50%  { filter: drop-shadow(0 0 50px rgba(168,85,247,0.5)) drop-shadow(0 0 20px rgba(236,72,153,0.2)); }
+  100% { filter: drop-shadow(0 0 35px rgba(124,58,237,0.4)) drop-shadow(0 0 12px rgba(168,85,247,0.15)); }
 }
 
 .hero-title {
@@ -886,7 +885,9 @@ h1, h2, h3, h4 {
   <canvas id="galaxsea" aria-hidden="true"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-content">
-    <canvas id="otto-canvas" width="560" height="560" aria-label="Otto — the Octopuss AI mascot"></canvas>
+    <video id="otto-video" autoplay loop muted playsinline aria-label="Otto — the Octopuss AI mascot">
+      <source src="otto-animated.webm" type="video/webm">
+    </video>
     <p class="otto-intro">Meet <strong>Otto</strong></p>
     <h1 class="hero-title gradient-text">OCTOPUSS AI</h1>
     <p class="hero-tagline">He always finds such <em>Curious</em> things!</p>
@@ -1289,221 +1290,6 @@ document.getElementById('btcAddress').addEventListener('keydown', function(e) {
   requestAnimationFrame(drawGalaxsea);
 })();
 
-// =========================================================
-//  OTTO — Interactive autonomous character
-// =========================================================
-(function() {
-  var canvas = document.getElementById('otto-canvas');
-  if (!canvas) return;
-  var ctx = canvas.getContext('2d');
-  var W = canvas.width;
-  var H = canvas.height;
-  var img = new Image();
-  var loaded = false;
-
-  // Crystal cube region (fraction of image)
-  var crystalCx = 0.49, crystalCy = 0.253, crystalR = 0.17;
-
-  // Interactive state
-  var mouseX = W / 2, mouseY = H / 2;
-  var isHovered = false;
-  var lastClick = 0;
-  var clickBurst = 0;    // 0-1, decays after click
-  var mood = 'idle';     // idle, curious, excited, sleepy
-  var moodTimer = 0;
-  var idleTime = 0;
-  var lookX = 0, lookY = 0;       // smooth look direction
-  var targetLookX = 0, targetLookY = 0;
-
-  // Tooltip
-  var tooltip = document.createElement('div');
-  tooltip.className = 'otto-tooltip';
-  tooltip.textContent = "Hi! I'm Otto ✨";
-  tooltip.style.cssText = 'position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);' +
-    'background:rgba(124,58,237,0.9);color:#fff;padding:6px 14px;border-radius:20px;' +
-    'font-size:14px;white-space:nowrap;opacity:0;transition:opacity 0.4s;pointer-events:none;z-index:10;';
-  canvas.parentElement.style.position = 'relative';
-  canvas.parentElement.appendChild(tooltip);
-
-  var phrases = [
-    "Hi! I'm Otto ✨", "He always finds such curious things!",
-    "Want to explore the galaxy?", "*wiggles tentacles*",
-    "Compassionate AI 💜", "I'm feeling curious today!",
-    "Click me again! 🐙", "Swimming through the cosmos..."
-  ];
-
-  img.onload = function() {
-    loaded = true;
-    // Extract crystal region to offscreen canvas for rotation
-    var cw = Math.floor(img.width * crystalR * 2.2);
-    var ch = cw;
-    var csx = Math.floor(img.width * crystalCx - cw/2);
-    var csy = Math.floor(img.height * crystalCy - ch/2);
-    window._ottoCrystal = { canvas: document.createElement('canvas'), sx: csx, sy: csy, sw: cw, sh: ch };
-    window._ottoCrystal.canvas.width = cw;
-    window._ottoCrystal.canvas.height = ch;
-    var cctx = window._ottoCrystal.canvas.getContext('2d');
-    cctx.drawImage(img, csx, csy, cw, ch, 0, 0, cw, ch);
-    requestAnimationFrame(animate);
-  };
-  img.src = 'otto.png';
-
-  // Mouse tracking
-  canvas.addEventListener('mousemove', function(e) {
-    var rect = canvas.getBoundingClientRect();
-    mouseX = (e.clientX - rect.left) / rect.width * W;
-    mouseY = (e.clientY - rect.top) / rect.height * H;
-    targetLookX = (mouseX - W/2) / (W/2);
-    targetLookY = (mouseY - H/2) / (H/2);
-    idleTime = 0;
-  });
-
-  canvas.addEventListener('mouseenter', function() {
-    isHovered = true;
-    idleTime = 0;
-    mood = 'curious';
-    tooltip.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-    tooltip.style.opacity = '1';
-    setTimeout(function() { tooltip.style.opacity = '0'; }, 2500);
-  });
-
-  canvas.addEventListener('mouseleave', function() {
-    isHovered = false;
-    targetLookX = 0;
-    targetLookY = 0;
-    mood = 'idle';
-  });
-
-  canvas.addEventListener('click', function() {
-    lastClick = performance.now();
-    clickBurst = 1;
-    mood = 'excited';
-    moodTimer = 120; // frames of excitement
-    tooltip.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-    tooltip.style.opacity = '1';
-    setTimeout(function() { tooltip.style.opacity = '0'; }, 2000);
-  });
-
-  function animate(t) {
-    if (!loaded) return;
-    ctx.clearRect(0, 0, W, H);
-
-    // Smooth look direction
-    lookX += (targetLookX - lookX) * 0.05;
-    lookY += (targetLookY - lookY) * 0.05;
-
-    // Mood timer
-    if (moodTimer > 0) {
-      moodTimer--;
-      if (moodTimer === 0) mood = isHovered ? 'curious' : 'idle';
-    }
-
-    // Click burst decay
-    if (clickBurst > 0) clickBurst *= 0.96;
-
-    // Idle timer
-    if (!isHovered) idleTime++;
-
-    var imgW = img.width;
-    var imgH = img.height;
-    var scale = Math.min((W - 40) / imgW, (H - 40) / imgH);
-    var dw = imgW * scale;
-    var dh = imgH * scale;
-    var ox = (W - dw) / 2;
-    var oy = (H - dh) / 2 - 10;
-
-    // Whole-body tilt toward mouse
-    var tiltX = lookX * 4;
-    var tiltRot = lookX * 0.03;
-
-    // Breathing
-    var breathe = Math.sin(t * 0.0015) * 0.015;
-
-    ctx.save();
-    ctx.translate(W/2, H/2);
-    ctx.rotate(tiltRot);
-    ctx.scale(1 + breathe, 1 - breathe * 0.5);
-    ctx.translate(-W/2 + tiltX, -H/2);
-
-    // === Draw body WITHOUT crystal region ===
-    // Head zone: top 38%
-    var headFrac = 0.38;
-    var headH = Math.floor(imgH * headFrac);
-
-    // Draw head (crystal will be overlaid with rotation)
-    ctx.drawImage(img, 0, 0, imgW, headH, ox, oy, dw, headH * scale);
-
-    // === Draw tentacles with displacement ===
-    var sliceCount = imgH - headH;
-    var baseMul = mood === 'excited' ? 2.5 : (mood === 'curious' ? 1.6 : 1.0);
-    var burstMul = 1 + clickBurst * 3;
-
-    for (var i = 0; i < sliceCount; i++) {
-      var srcY = headH + i;
-      var progress = i / sliceCount;
-      var ease = progress * progress * progress;
-
-      // Tentacles reach toward mouse when curious
-      var reachX = isHovered ? lookX * 8 * ease : 0;
-
-      var wave1 = Math.sin(t * 0.002 + progress * 4.5) * 12 * ease * baseMul * burstMul;
-      var wave2 = Math.sin(t * 0.0035 + progress * 3.2 + 1.8) * 6 * ease * baseMul;
-      var wave3 = Math.sin(t * 0.0015 + progress * 6.0 + 3.5) * 4 * ease * baseMul;
-      var dx = wave1 + wave2 + wave3 + reachX;
-
-      var stretch = 1 + Math.sin(t * 0.001 + progress * 2) * 0.03 * ease;
-
-      ctx.drawImage(img,
-        0, srcY, imgW, 1,
-        ox + dx * scale, oy + (headH + i) * scale * stretch, dw, scale + 0.5
-      );
-    }
-
-    // === Twirling crystal overlay ===
-    var cryst = window._ottoCrystal;
-    if (cryst) {
-      var cScale = scale;
-      var cdw = cryst.sw * cScale;
-      var cdh = cryst.sh * cScale;
-      var ccx = ox + (cryst.sx + cryst.sw/2) * cScale;
-      var ccy = oy + (cryst.sy + cryst.sh/2) * cScale;
-
-      // Slow continuous rotation + speed burst on click
-      var rotSpeed = 0.0008 + clickBurst * 0.01;
-      var rot = t * rotSpeed;
-
-      ctx.save();
-      ctx.translate(ccx, ccy);
-      ctx.rotate(rot);
-      // Subtle scale pulse
-      var cPulse = 1 + Math.sin(t * 0.003) * 0.05;
-      ctx.scale(cPulse, cPulse);
-      ctx.globalAlpha = 0.85 + Math.sin(t * 0.002) * 0.15;
-      ctx.drawImage(cryst.canvas, -cdw/2, -cdh/2, cdw, cdh);
-      ctx.restore();
-    }
-
-    ctx.restore();
-
-    // === Click burst particles ===
-    if (clickBurst > 0.05) {
-      var sparkCount = 8;
-      var elapsed = t - lastClick;
-      for (var i = 0; i < sparkCount; i++) {
-        var angle = (i / sparkCount) * Math.PI * 2 + elapsed * 0.002;
-        var dist = elapsed * 0.08 * (1 - clickBurst * 0.3);
-        var sx = W/2 + Math.cos(angle) * dist;
-        var sy = H/2 - 30 + Math.sin(angle) * dist * 0.6;
-        ctx.beginPath();
-        ctx.arc(sx, sy, 2 + clickBurst * 3, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(168,85,247,' + (clickBurst * 0.7) + ')';
-        ctx.fill();
-      }
-    }
-
-    requestAnimationFrame(animate);
-  }
-})();
 </script>
 
 </body>
