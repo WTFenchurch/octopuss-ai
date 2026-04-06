@@ -240,12 +240,157 @@ h1, h2, h3, h4 {
 /* =========================================================
    GRADIENT SEPARATOR
    ========================================================= */
+/* Animated gradient separator — pulses like bioluminescence */
 .gradient-line {
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--violet), var(--cyan), transparent);
+  background: linear-gradient(90deg, transparent, var(--violet), var(--cyan), var(--violet), transparent);
+  background-size: 200% 100%;
+  animation: gradientFlow 4s ease-in-out infinite;
   border: none;
   margin: var(--sp-16) 0;
-  opacity: 0.5;
+  opacity: 0.6;
+}
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; opacity: 0.4; }
+  50% { background-position: 100% 50%; opacity: 0.8; }
+  100% { background-position: 0% 50%; opacity: 0.4; }
+}
+
+/* Section entrance — fade up with subtle scale */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Section labels — glowing purple pulse */
+.section-label {
+  position: relative;
+  display: inline-block;
+}
+.section-label::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--violet), transparent);
+  animation: labelGlow 3s ease-in-out infinite;
+}
+@keyframes labelGlow {
+  0%, 100% { opacity: 0.3; width: 60%; }
+  50% { opacity: 0.8; width: 100%; }
+}
+
+/* Ethics cards — deep sea glow on hover */
+.ethics-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.ethics-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15), 0 0 0 1px rgba(124, 58, 237, 0.2);
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+/* Ethics icons — slow pulse like a heartbeat */
+.ethics-icon {
+  display: inline-block;
+  animation: iconPulse 3s ease-in-out infinite;
+}
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* Product card — cosmic glow intensify on hover */
+.product-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.2), 0 0 60px rgba(124, 58, 237, 0.08);
+}
+
+/* CTA button — shimmer sweep */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: btnShimmer 4s ease-in-out infinite;
+}
+@keyframes btnShimmer {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* Support cards — warm glow on hover */
+.support-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.support-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(234, 179, 8, 0.1);
+}
+
+/* Floating ambient particles across sections */
+.page-content {
+  position: relative;
+}
+.page-content::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(1px 1px at 10% 20%, rgba(147,51,234,0.3), transparent),
+    radial-gradient(1px 1px at 30% 60%, rgba(124,58,237,0.2), transparent),
+    radial-gradient(1px 1px at 50% 40%, rgba(147,51,234,0.15), transparent),
+    radial-gradient(1px 1px at 70% 80%, rgba(124,58,237,0.2), transparent),
+    radial-gradient(1px 1px at 90% 30%, rgba(147,51,234,0.25), transparent),
+    radial-gradient(1px 1px at 20% 90%, rgba(6,182,212,0.15), transparent),
+    radial-gradient(1px 1px at 80% 10%, rgba(6,182,212,0.2), transparent);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambientDrift 20s linear infinite;
+}
+@keyframes ambientDrift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-30px); }
+}
+
+/* Nav links — underline grows on hover */
+.nav-links a {
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background: var(--violet);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+.nav-links a:hover::after {
+  width: 100%;
+  left: 0;
 }
 
 /* =========================================================
